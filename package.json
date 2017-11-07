@@ -1,0 +1,53 @@
+{
+  "name": "meitu",
+  "version": "1.0.0",
+  "description": "美图秀秀web开放平台功能测试",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "美图秀秀图像处理"
+  ],
+  "author": "wuzhe",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "rotating-file-stream": "latest",
+    "moment": "latest",
+    "morgan": "latest",
+    "multer": "latest",
+    "mysql": "latest",
+    "nodemailer": "latest",
+    "socket.io": "latest",
+    "uuid": "latest"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-changed": "^1.3.2",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^3.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-css-spriter": "^0.4.0",
+    "gulp-jscs": "^4.0.0",
+    "jshint": "latest",
+    "gulp-jshint": "^2.0.4",
+    "gulp-less": "^3.3.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-rename": "^1.2.2",
+    "gulp-rev": "^8.0.0",
+    "gulp-rev-collector": "latest",
+    "gulp-rev-replace": "^0.4.3",
+    "gulp-uglify": "^2.0.1",
+    "gulp-useref": "^3.1.2",
+    "gulp-watch": "^4.3.11"
+  }
+}
