@@ -10,7 +10,7 @@ let storage = multer.diskStorage({
     destination: path.join(process.cwd(),'public/image/upload/'),
     filename: function(req,file,callback){
         let filename = (file.originalname).split('.');
-        callback(null, `${filename[0]}.${filename[filename.length - 1]}`);
+        callback(null, `${Date.now()}.${filename[filename.length - 1]}`);
     }
 });
 

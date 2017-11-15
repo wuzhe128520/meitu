@@ -38,4 +38,4 @@ const http = require('http'),
 
        //访问当前路径的时候，交给index文件里的路由方法来处理
        app.use('/',require('./router/index'));
-       let server =http.createServer(app).listen(3000);
+       let server =http.createServer(app).listen(3001);

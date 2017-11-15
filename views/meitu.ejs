@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>美图WEB开放平台</title>
@@ -11,21 +11,57 @@
     </style>
 </head>
 <body>
-<iframe id="meituContainer" width="100%" height="700" frameborder="0"></iframe>
+<h2>1、扫描到的图片</h2>
+<div style="width: 300px;height: 300px;overflow: hidden;border: 1px solid red;">
+    <img src="image/saomiao.jpg" alt="" style="width: 100%;height: 100%;" id="img">
+</div>
 <button id="openXiuxiu">美化图像</button>
+<button id="beautiful">美图秀秀美化图像</button>
+<script>
+    window.onload = function() {
+        var beautiful = document.getElementById('beautiful');
+
+        //粘贴之后才执行
+  /*      beautiful.onclick = function() {
+            var scanImageWrap = document.getElementById('scanImageWrap');
+        }*/
+        var scanImageWrap = document.getElementById('scanImageWrap');
+
+        //监听粘贴事件
+        scanImageWrap.onpaste = function(event){
+          var index = setInterval(function(){
+               var $img = $("#scanImageWrap").find('img');
+               if($img.length >= 1){
+
+                   base64ImgStr = $img.eq(0).attr('src');
+                   base64ImgStr = formatBase64Str(base64ImgStr);
+                   alert(base64ImgStr.substring(0,100));
+                   clearInterval(index);
+               }
+           },3000);
+        }
+    }
+</script>
+<div style="display: none; overflow:hidden;">
+    <canvas id="canvas"></canvas>
+</div>
+<iframe id="meituContainer" width="100%" height="700" frameborder="0"></iframe>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script>
-    var meituContainer = document.getElementById('meituContainer');
+    var meituContainer = document.getElementById('meituContainer'),
+        base64ImgStr = '';
+
     openXiuxiu.onclick = function() {
+       /* convertImageToCanvas("img", "canvas", function(){
+            base64ImgStr = formatBase64Str(getBase64Img('canvas'));
+
+        });*/
         meituContainer.onload = function() {
             changeFrameHeight();
         }
         meituContainer.src = 'xiuxiu.html';
         meituContainer.style.display = 'block';
-
     }
-
-
 
     function changeFrameHeight(){
         var ifm= document.getElementById("meituContainer");
@@ -37,8 +73,129 @@
         changeFrameHeight();
 
     }
+    function formatBase64Str(str){
+        var reg = /^data:.+base64,/;
+        return str.replace(reg,'');
+    }
+    // 把image 转换为 canvas对象
+    function convertImageToCanvas(originImgId, canvasId, imgLoadedFn) {
 
+        // 创建canvas DOM元素，并设置其宽高和图片一样
+        var text = document.createTextNode('您的浏览器不支持canvas,请升级您的浏览器!');
+        imageObj = new Image(),
+            copyedImg = document.getElementById(originImgId),
+            canvas = document.getElementById(canvasId);
+
+        imageObj.src = copyedImg.getAttribute('src');
+        imageObj.onload = function() {
+
+            canvas.width = imageObj.width;
+            canvas.height = imageObj.height;
+            canvas.appendChild(text);
+
+            // 坐标(0,0) 表示从此处开始绘制，相当于偏移。
+            canvas.getContext("2d").drawImage(imageObj, 0, 0);
+            imgLoadedFn && imgLoadedFn();
+        };
+    }
+
+    //获取base64类型的图像信息
+    function getBase64Img(canvasId) {
+        var canvasObj = document.getElementById(canvasId);
+        return canvasObj.toDataURL();
+    }
 
 </script>
+
+
+
+<SCRIPT ID=clientEventHandlersJS LANGUAGE=javascript>
+    function Twain_OnPostTransfer() {
+        var timeStamp = new Date().getTime();
+        frmSample.Twain.CloseSource();
+
+        //var isSuccess = frmSample.Twain.SaveAsJPEG(".\\"+timeStamp+".jpeg");
+       /* if(!isSuccess && frmSample.IfThrowException) {
+            alert(frmSample.errorString);
+        }*/
+        var copyImg = frmSample.Twain.CutToClipboard();
+        debugger;
+        if(copyImg) {
+            var picture = frmSample.Twain.Picture;
+            //var data = Clipboard.GetData("DIB");
+            //var clipboard = window.clipboardData.getData("DIB");
+            //alert('扫描的图像已经复制到剪切板，使用ctrl+v粘贴到指定的图像区域!');
+        }
+        //frmSample.imgAcquiredImage.src = ".\\"+timeStamp+".jpeg";
+    }
+
+    function btnAcquire_onclick() {
+        frmSample.Twain.SelectSource();
+        frmSample.Twain.OpenSource();
+
+
+        switch (frmSample.sltColor.value){
+            case "1":
+                intPixelType = 0;		//Black and White
+                intColorDepth = 1;		//1 bit
+                break;
+            case "2":
+                intPixelType = 1;		//gray
+                intColorDepth = 8;		//8 bit
+                break;
+            case "3":
+                intPixelType = 2;		//color
+                intColorDepth = 24;		//24 bit
+                break;
+        }
+
+
+        frmSample.Twain.PixelType= intPixelType;	//Set ICAP_PIXELTYPE(像素类型)
+
+        frmSample.Twain.BipDepth = intColorDepth;	//Set ICAP_BITDEPTH(色彩深度)
+
+
+        //ready to acquire image
+        frmSample.Twain.IfShowUI = false;
+        frmSample.Twain.EnableSource();
+
+    }
+
+    //-->
+</SCRIPT>
+
+<div contenteditable style="width: 1000px;height: 1000px; border:1px solid" id="scanImageWrap">
+    粘贴图片到这里
+</div>
+<SCRIPT LANGUAGE=javascript FOR=Twain EVENT=OnPostTransfer>
+
+    Twain_OnPostTransfer()
+
+</SCRIPT>
+
+<FORM id = frmSample>
+
+    <img id = imgAcquiredImage src = "../dist/img/dt.jpg" height = 230 width = 200 border = 1><BR>
+    Bit-Depth:
+    <SELECT id = sltColor>
+        <OPTION VALUE="1">1 Bit BW
+        <OPTION VALUE="2">8 Bit Gray(8位灰度)
+        <OPTION VALUE="3" SELECTED>24 Bit Color(24位彩色)</OPTION>
+    </SELECT> <BR>
+    <input id = btnAcquire type="button" value="扫描" LANGUAGE=javascript onclick="return btnAcquire_onclick()">
+    <object classid="clsid:650879D6-AF38-4852-A1CC-D2ED4699684D" width="14" height="14" id="Twain">
+        <param name="_cx" value="847">
+        <param name="_cy" value="847">
+        <param name="JpgQuality" value="80">
+        <param name="Manufacturer" value="DynamSoft Corporation">
+        <param name="ProductFamily" value="Dynamic TWAIN">
+        <param name="ProductName" value="Dynamic TWAIN">
+        <param name="VersionInfo" value="Dynamic TWAIN 2.1">
+        <param name="TransferMode" value="0">
+    </object>
+</FORM>
 </body>
 </html>
+
+
+

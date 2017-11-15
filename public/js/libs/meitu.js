@@ -1,4 +1,5 @@
 (function(){
+    var base64ImgStr = parent.base64ImgStr;
     //自定义功能菜单(包括主菜单和二级菜单)
 //xiuxiu.setLaunchVars("customMenu", [{"decorate":["basicEdit","text","border","doodle","localFixed"]}]);
     xiuxiu.setLaunchVars("customMenu", ["decorate"]);
@@ -10,8 +11,8 @@
     xiuxiu.setUploadType(2);
     xiuxiu.setUploadDataFieldName("upload_file");
     xiuxiu.onInit = function () {
-        //xiuxiu.loadPhoto("http://open.web.meitu.com/sources/images/1.jpg");
-    }
+        xiuxiu.loadPhoto(base64ImgStr, true);
+    };
     xiuxiu.onUploadResponse = function (data) {
         try{
             var obj = null;

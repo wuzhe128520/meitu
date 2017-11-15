@@ -30,7 +30,7 @@
   "devDependencies": {
     "browser-sync": "^2.18.8",
     "gulp": "^3.9.1",
-    "gulp-changed": "^1.3.2",
+    "gulp-changed": "latest",
     "gulp-clean": "^0.3.2",
     "gulp-clean-css": "^3.0.2",
     "gulp-concat": "^2.6.1",
@@ -46,7 +46,7 @@
     "gulp-rev": "^8.0.0",
     "gulp-rev-collector": "latest",
     "gulp-rev-replace": "^0.4.3",
-    "gulp-uglify": "^2.0.1",
+    "gulp-uglify": "latest",
     "gulp-useref": "^3.1.2",
     "gulp-watch": "^4.3.11"
   }
